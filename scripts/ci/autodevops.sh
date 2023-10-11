@@ -172,6 +172,11 @@ CIYAML
 
     SENTRY_CONFIGURATION="-f ci.sentry.yaml"
   fi
+  FEATURE_VALUES=""
+
+  if [ -r "${CI_COMMIT_REF_NAME}" ]; then
+    FEATURE_VALUES="-f test-values/${CI_COMMIT_REF_NAME}"
+  fi
 
   helm upgrade --install \
     $WAIT \
@@ -196,6 +201,7 @@ CIYAML
     --set global.extraEnv.GITLAB_LICENSE_MODE="test" \
     --set global.extraEnv.CUSTOMER_PORTAL_URL="https://customers.staging.gitlab.com" \
     --set global.gitlab.license.secret="$RELEASE_NAME-gitlab-license" \
+    ${FEATURE_VALUES} \
     --namespace="$NAMESPACE" \
     "${gitlab_version_args[@]}" \
     --version="$CI_PIPELINE_ID-$CI_JOB_ID" \

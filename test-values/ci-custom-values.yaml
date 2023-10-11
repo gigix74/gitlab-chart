@@ -1,0 +1,11 @@
+global:
+  ## Global Service Annotations and Labels
+  service:
+    annotations: 
+      sample/change: "changed-service"
+   
+
+  ## Global Deployment Annotations
+  deployment:
+    annotations: 
+      sample/change: "changed-deployment"

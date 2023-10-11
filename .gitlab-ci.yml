@@ -189,9 +189,15 @@ lint_package:
     - helm dependency update
     - echo "$HELM_DEFAULT_SETTINGS" | tee ./template_settings.yaml
     - echo "$HELM_SETTINGS" | tee -a ./template_settings.yaml
+    - FEATURE_VALUES=""
+    - |
+      if [ -r "test-values/${CI_COMMIT_REF_NAME}.yaml" ]; then
+        FEATURE_VALUES="-f test-values/${CI_COMMIT_REF_NAME}.yaml"
+      fi
     - >
       helm kubeconform --strict --summary
       -f ./template_settings.yaml
+      ${FEATURE_VALUES}
       --kubernetes-version $KUBE_VERSION
       --schema-location default
       --schema-location "$KUBE_CRD_SCHEMA_URL"

@@ -174,8 +174,8 @@ CIYAML
   fi
   FEATURE_VALUES=""
 
-  if [ -r "${CI_COMMIT_REF_NAME}" ]; then
-    FEATURE_VALUES="-f test-values/${CI_COMMIT_REF_NAME}"
+  if [ -r "test-values/${CI_COMMIT_REF_NAME}.yaml" ]; then
+    FEATURE_VALUES="-f test-values/${CI_COMMIT_REF_NAME}.yaml"
   fi
 
   helm upgrade --install \

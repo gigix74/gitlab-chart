@@ -174,7 +174,7 @@ CIYAML
   fi
   FEATURE_VALUES=""
 
-  if [ -r "test-values/${CI_COMMIT_REF_NAME}.yaml" ]; then
+  if [ -r "test-values/${CI_COMMIT_REF_NAME}.yaml" ] && [ "${USE_DEFAULT_VALUES}" != "true" ]; then
     FEATURE_VALUES="-f test-values/${CI_COMMIT_REF_NAME}.yaml"
   fi
 

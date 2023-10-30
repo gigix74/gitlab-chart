@@ -58,6 +58,7 @@ Due to gotpl scoping, we can't make use of `range`, so we have to add action lin
 {{- $deprecated = append $deprecated (include "gitlab.deprecate.hpa.legacyCpuTarget" .) -}}
 {{- $deprecated = append $deprecated (include "gitlab.deprecate.hpa.behaviorMispell" .) -}}
 {{- $deprecated = append $deprecated (include "gitlab.deprecate.global.grafana" .) -}}
+{{- /* $deprecated = append $deprecated (include "gitlab.deprecate.psql.unified" .) */ -}}
 
 {{- /* we're ready to deprecate top-level registry entries for workhorse and sidekiq, but not enforcing yet */ -}}
 {{- /* $deprecated = append $deprecated (include "gitlab.deprecate.registry.topLevel" .) */ -}}
@@ -485,5 +486,12 @@ registry:
 {{-   if hasKey $.Values.gitlab.sidekiq "registry" }}
 registry:
     The configuration of `gitlab.sidekiq.registry` has moved. Please use `global.registry` instead
+{{-   end -}}
+{{- end -}}
+
+{{- define "gitlab.deprecate.psql.unified" -}}
+{{-   if or ( not ( hasKey $.Values.global.psql "main" ) ) ( not ( hasKey $.Values.global.psql "ci" )) -}}
+global.psql:
+    Unified configuration for PostgreSQL is deprecated. Please define `global.psql.main` and `global.psql.ci` instances.
 {{-   end -}}
 {{- end -}}

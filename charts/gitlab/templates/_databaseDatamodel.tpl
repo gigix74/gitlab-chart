@@ -55,13 +55,19 @@ Example object -
 */}}
 {{- define "database.datamodel.prepare" -}}
 {{- if not (hasKey (get $.Values "local" | default (dict)) "psql") -}}
+{{/* .Values.local.psql = {} */}}
 {{-   $_ := set $.Values "local" (dict "psql" (dict)) -}}
+{{/* 'main' settings will override any of the global settings here if defined */}}
+{{/*TODO we need to disband this notion of global psql config here. Always go for `main` and `ci` */}}
 {{-   $global := mergeOverwrite (deepCopy $.Values.global.psql) (deepCopy (get $.Values.global.psql "main" | default (dict))) -}}
 {{-   $globalBlank := fromYaml (include "database.datamodel.blank" $global) -}}
+{{/* after we've copied `main` settings to $global we copy potential main settings to `main` sub-dict */}}
 {{-   $_ := set $global "main" (deepCopy (get $.Values.global.psql "main" | default $globalBlank)) -}}
 {{-   $_ := set $global "ci" (deepCopy (get $.Values.global.psql "ci" | default $globalBlank)) -}}
+{{/*TODO we need to disband this notion of local psql config here. Always go for `main` and `ci` */}} 
 {{-   $local  := mergeOverwrite (deepCopy $.Values.psql) (deepCopy (get $.Values.psql "main") | default (dict)) -}}
 {{-   $localBlank := fromYaml (include "database.datamodel.blank" $local) -}}
+{{/* after we've copied `main` settings to $local we copy potential main settings to `main` sub-dict */}}
 {{-   $_ := set $local "main" (deepCopy (get $.Values.psql "main" | default $localBlank))  -}}
 {{-   $_ := set $local "ci" (deepCopy (get $.Values.psql "ci" | default $localBlank))  -}}
 {{-   range $decomposedDatabase := $global.knownDecompositions -}}

@@ -16,14 +16,22 @@ Ensure that if `psql.password.useSecret` is set to false, a path to the password
 {{- define "gitlab.checkConfig.postgresql.noPasswordFile" -}}
 {{- $errorMsg := list -}}
 {{- $subcharts := pick .Values.gitlab "geo-logcursor" "gitlab-exporter" "migrations" "sidekiq" "toolbox" "webservice" -}}
+{{- $knownDecompositions := $.Values.global.knownDecompositions -}}
 {{- range $name, $sub := $subcharts -}}
-{{-   $useSecret := include "gitlab.boolean.local" (dict "local" (pluck "useSecret" (index $sub "psql" "password") | first) "global" $.Values.global.psql.password.useSecret "default" true) -}}
-{{-   if and (not $useSecret) (not (pluck "file" (index $sub "psql" "password") ($.Values.global.psql.password) | first)) -}}
+{{-  range $decomposition := $knownDecompositions -}}
+{{-   $global = $.Values.global.psql -}}
+{{-   $localUnifiedSecret := (pluck "useSecret" (index $sub "psql" "password") | first) -}}
+{{-   $localDecompositionSecret := (pluck "useSecret" (index $sub "psql" $decomposition "password") | first | default $localUnifiedSecret)  -}} 
+{{-   $globalUnifiedSecret := $.Values.global.psql.password.useSecret -}}
+{{-   $globalDecomposedSecret := dig $decomposition "useSecret" $globalUnifiedSecret $global  -}}
+{{-   $useSecret := include "gitlab.boolean.local" (dict "local" $localDecompositionSecret "global" $globalDecomposedSecret "default" true) -}}
+{{-   if and (not $useSecret) (not ( pluck "file" (index $sub "psql" $decomposition "password") (index $sub "psql" "password") (index "global" "password") (index $global $decomposition "password") | first)) -}}
 {{-      $errorMsg = append $errorMsg (printf "%s: If `psql.password.useSecret` is set to false, you must specify a value for `psql.password.file`." $name) -}}
 {{-   end -}}
 {{-   if and (not $useSecret) ($.Values.postgresql.install) -}}
 {{-      $errorMsg = append $errorMsg (printf "%s: PostgreSQL can not be deployed with this chart when using `psql.password.useSecret` is false." $name) -}}
 {{-   end -}}
+{{-  end -}}
 {{- end -}}
 {{- if not (empty $errorMsg) }}
 postgresql:

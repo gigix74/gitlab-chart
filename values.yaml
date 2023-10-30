@@ -126,25 +126,18 @@ global:
 
   ## https://docs.gitlab.com/charts/charts/globals#configure-postgresql-settings
   psql:
-    connectTimeout:
-    keepalives:
-    keepalivesIdle:
-    keepalivesInterval:
-    keepalivesCount:
-    tcpUserTimeout:
-    password: {}
-      # useSecret:
-      # secret:
-      # key:
-      # file:
-    # host: postgresql.hostedsomewhere.else
-    # port: 123
-    # username: gitlab
-    # database: gitlabhq_production
-    # applicationName:
-    # preparedStatements: false
-    # databaseTasks: true
-    main: {}
+    main:
+      connectTimeout:
+      keepalives:
+      keepalivesIdle:
+      keepalivesInterval:
+      keepalivesCount:
+      tcpUserTimeout:
+      password: {}
+        # useSecret:
+        # secret:
+        # key:
+        # file:
       # host: postgresql.hostedsomewhere.else
       # port: 123
       # username: gitlab
@@ -152,14 +145,26 @@ global:
       # applicationName:
       # preparedStatements: false
       # databaseTasks: true
-    ci: {}
+    ci:
+      connectTimeout:
+      keepalives:
+      keepalivesIdle:
+      keepalivesInterval:
+      keepalivesCount:
+      tcpUserTimeout:
+      password: {}
+        # useSecret:
+        # secret:
+        # key:
+        # file:
       # host: postgresql.hostedsomewhere.else
       # port: 123
       # username: gitlab
-      # database: gitlabhq_production_ci
+      # database: gitlabhq_production
       # applicationName:
       # preparedStatements: false
-      # databaseTasks: false
+      # databaseTasks: true
+
 
   ## https://docs.gitlab.com/charts/charts/globals#configure-redis-settings
   redis:

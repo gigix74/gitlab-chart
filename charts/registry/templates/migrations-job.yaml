@@ -1,4 +1,4 @@
-{{- if and .Values.enabled .Values.database.enabled .Values.database.migrations.enabled }}
+{{- if and .Values.enabled .Values.database .Values.database.migrations.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:

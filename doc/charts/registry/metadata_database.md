@@ -131,14 +131,14 @@ To enable the database:
        password:
          secret: gitlab-registry-database-password # must match the secret name
          key: password  # must match the secret key to read the password from
-     sslmode: verify-full
-     ssl:
-       secret: gitlab-registry-postgresql-ssl # you will need to create this secret manually
-       clientKey: client-key.pem
-       clientCertificate: client-cert.pem
-       serverCA: server-ca.pem
-     migrations:
-       enabled: true  # this option will execute the schema migration as part of the registry deployment
+       sslmode: verify-full
+       ssl:
+         secret: gitlab-registry-postgresql-ssl # you will need to create this secret manually
+         clientKey: client-key.pem
+         clientCertificate: client-cert.pem
+         serverCA: server-ca.pem
+       migrations:
+         enabled: true  # this option will execute the schema migration as part of the registry deployment
    ```
 
 1. Optional. You can verify the schema migrations have been applied properly.
@@ -215,8 +215,8 @@ When doing a one-step migration, be aware that:
          clientKey: client-key.pem
          clientCertificate: client-cert.pem
          serverCA: server-ca.pem
-     migrations:
-       enabled: true  # this option will execute the schema migration as part of the registry deployment
+       migrations:
+         enabled: true  # this option will execute the schema migration as part of the registry deployment
    ```
 
 1. Upgrade your Helm installation to apply changes in your deployment:
@@ -253,8 +253,8 @@ When doing a one-step migration, be aware that:
        password:
          secret: gitlab-registry-database-password
          key: password
-     migrations:
-       enabled: true
+       migrations:
+         enabled: true
    ```
 
 1. Upgrade your Helm installation to apply changes in your deployment:

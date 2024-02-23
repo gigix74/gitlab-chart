@@ -1,4 +1,5 @@
 {{- if and .Values.enabled .Values.database .Values.database.migrations.enabled }}
+{{- $imageCfg := dict "global" .Values.global.image "local" .Values.image -}}
 {{- $initImageCfg := include "gitlab.configure.config" .Values | fromYaml -}}
 apiVersion: batch/v1
 kind: Job
@@ -63,7 +64,11 @@ spec:
       {{- include "gitlab.extraContainers" . | nindent 6 }}
       - name: migrations
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}{{ include "gitlab.image.tagSuffix" . }}"
-        imagePullPolicy: {{ default "" .Values.image.pullPolicy | quote }}
+        {{- if  .Values.image.pullPolicy }}
+        imagePullPolicy: {{  .Values.image.pullPolicy}}
+        {{- else }}
+        {{- include "gitlab.image.pullPolicy" $imageCfg | indent 8 }}
+        {{- end }}
         args:
         - /scripts/wait-for-deps
         - /scripts/db-migrate

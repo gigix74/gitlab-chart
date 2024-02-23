@@ -381,7 +381,7 @@ database:
   sslmode: disable
   ssl: {}
   migrations:
-    enabled: false
+    enabled: true
     activeDeadlineSeconds: 3600
     backoffLimit: 6
 

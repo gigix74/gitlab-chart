@@ -61,6 +61,8 @@ describe 'registry configuration' do
       expect(t.dig('Service/test-registry', 'metadata', 'labels')).to include('service' => 'true')
       expect(t.dig('Service/test-registry', 'metadata', 'labels')).not_to include('global' => 'global')
       expect(t.dig('ServiceAccount/test-registry', 'metadata', 'labels')).to include('global' => 'registry')
+      # the default value of registry.migrations.enabled is true, so this job must be present
+      expect(t.dig('Job/test-registry-migrations-1', 'metadata', 'labels')).to include('global' => 'registry')
     end
   end
 
@@ -241,6 +243,34 @@ describe 'registry configuration' do
               dbname: registry
               sslmode: disable
               primary: primary.record.fqdn
+            CONFIG
+          )
+        end
+      end
+
+      context 'when database is disabled' do
+        let(:values) do
+          YAML.safe_load(%(
+            registry:
+              database:
+                enabled: false
+          )).deep_merge(default_values)
+        end
+
+        it 'populates the database primary settings correctly ' do
+          t = HelmTemplate.new(values)
+          expect(t.exit_code).to eq(0), "Unexpected error code #{t.exit_code} -- #{t.stderr}"
+
+          expect(t.dig('ConfigMap/test-registry', 'data', 'config.yml')).to include(
+            <<~CONFIG
+            database:
+              enabled: false
+              host: "test-postgresql.default.svc"
+              port: 5432
+              user: registry
+              password: "DB_PASSWORD_FILE"
+              dbname: registry
+              sslmode: disable
             CONFIG
           )
         end

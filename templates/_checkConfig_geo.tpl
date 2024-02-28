@@ -2,13 +2,14 @@
 Ensure a database is configured when using Geo
 listen over TLS */}}
 {{- define "gitlab.checkConfig.geo.database" -}}
+{{- $root_context := . -}}
 {{- with $.Values.global -}}
 {{- if eq true .geo.enabled -}}
-{{-   if not .psql.host }}
+{{-   if not .geo.psql.host }}
 geo: no database provided
     It appears Geo was configured but no database was provided. Geo behaviors require external databases. Ensure `global.psql.host` is set.
 {{    end -}}
-{{-   if not .psql.password.secret }}
+{{-   if not .geo.psql.password.secret }}
 geo: no database password provided
     It appears Geo was configured, but no database password was provided. Geo behaviors require external databases. Ensure `global.psql.password.secret` is set.
 {{   end -}}
@@ -21,8 +22,9 @@ geo: no database password provided
 Ensure a database is configured when using Geo secondary
 listen over TLS */}}
 {{- define "gitlab.checkConfig.geo.secondary.database" -}}
+{{- $root_context := . -}}
 {{- with $.Values.global.geo -}}
-{{- if include "gitlab.geo.secondary" $ }}
+{{- if (include "gitlab.geo.secondary" $root_context) }}
 {{-   if not .psql.host }}
 geo: no secondary database provided
     It appears Geo was configured with `role: secondary`, but no database was provided. Geo behaviors require external databases. Ensure `global.geo.psql.host` is set.

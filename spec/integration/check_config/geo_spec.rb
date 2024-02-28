@@ -10,10 +10,10 @@ describe 'checkConfig geo' do
         global:
           geo:
             enabled: true
-          psql:
-            host: foo
-            password:
-              secret: bar
+            psql:
+              host: foo
+              password:
+                secret: bar
       )).merge(default_required_values)
     end
 
@@ -38,10 +38,10 @@ describe 'checkConfig geo' do
         global:
           geo:
             enabled: true
-          psql:
-            host: foo
-            password:
-              secret: bar
+            psql:
+              host: foo
+              password:
+                secret: bar
       )).merge(default_required_values)
     end
 
@@ -51,10 +51,6 @@ describe 'checkConfig geo' do
           geo:
             enabled: true
             role: secondary
-          psql:
-            host: foo
-            password:
-              secret: bar
       )).merge(default_required_values)
     end
 
@@ -76,9 +72,9 @@ describe 'checkConfig geo' do
                 'enabled' => true,
                 'primaryApiUrl' => 'http://registry.foobar.com'
               }
-            }
-          },
-          'psql' => { 'host' => 'foo', 'password' => { 'secret' => 'bar' } }
+            },
+            'psql' => { 'host' => 'foo', 'password' => { 'secret' => 'bar' } }
+          }
         }
       }.merge(default_required_values)
     end
@@ -93,9 +89,9 @@ describe 'checkConfig geo' do
               'replication' => {
                 'enabled' => true
               }
-            }
-          },
-          'psql' => { 'host' => 'foo', 'password' => { 'secret' => 'bar' } }
+            },
+            'psql' => { 'host' => 'foo', 'password' => { 'secret' => 'bar' } }
+          }
         }
       }.merge(default_required_values)
     end

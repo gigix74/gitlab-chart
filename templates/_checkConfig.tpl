@@ -41,8 +41,8 @@ Due to gotpl scoping, we can't make use of `range`, so we have to add action lin
 {{- $messages = append $messages (include "gitlab.checkConfig.serviceDeskEmail.deliveryMethod" .) -}}
 
 {{/* _checkConfig_geo.tpl*/}}
-{{- $messages = append $messages (include "gitlab.checkConfig.geo.secondary.database" .) -}}
 {{- $messages = append $messages (include "gitlab.checkConfig.geo.database" .) -}}
+{{- $messages = append $messages (include "gitlab.checkConfig.geo.secondary.database" .) -}}
 {{- $messages = append $messages (include "gitlab.checkConfig.geo.registry.replication.primaryApiUrl" .) -}}
 
 {{/* _checkConfig_gitaly.tpl*/}}

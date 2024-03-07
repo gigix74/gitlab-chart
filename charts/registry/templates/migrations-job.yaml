@@ -1,4 +1,4 @@
-{{- if and .Values.enabled .Values.database .Values.database.migrations.enabled }}
+{{- if and .Values.enabled (or .Values.database.enabled .Values.database.configure) .Values.database.migrations.enabled }}
 {{- $imageCfg := dict "global" .Values.global.image "local" .Values.image -}}
 {{- $initImageCfg := include "gitlab.configure.config" .Values | fromYaml -}}
 apiVersion: batch/v1

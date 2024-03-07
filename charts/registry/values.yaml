@@ -372,6 +372,7 @@ serviceAccount:
 # and associated documentation before enabling this feature.
 # https://gitlab.com/gitlab-org/container-registry/-/blob/master/docs/configuration.md#database
 database:
+  configure: false
   enabled: false
   user: registry
   password: {}
